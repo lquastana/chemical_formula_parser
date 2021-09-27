@@ -3,7 +3,7 @@ Chemical formula parser
 ================
 A Chemical formula parser using Lark 
 """
-from lark import Lark, Transformer, v_args
+from lark import Lark, Transformer, v_args,Tree
 
 
 chemical_grammar = """
@@ -74,12 +74,14 @@ class ChemicalFormulaTree(Transformer):
         result_elements = []
         
         # The last argument is the coefficient, if the coefficient is not provided we set it to one
-        if len(args[-1].children[0]):
+        if isinstance(args[-1],Tree):
             coeff = int(args[-1].children[0].value)
+            self.__multiply(args[0:-1],result_elements,coeff)
         else :
             coeff = 1
+            self.__multiply(args,result_elements,coeff)
  
-        self.__multiply(args[0:-1],result_elements,coeff)
+        
 
         return result_elements
     
