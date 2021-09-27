@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(name="chemical-formula-parser",
       version="0.0.1",
-      description="A python package to parse chemical formulaes",
+      description="A python package to parse chemical formula",
       long_description=long_description,
       long_description_content_type="text/markdown",
       author="lquastana",
