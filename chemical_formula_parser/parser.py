@@ -5,7 +5,7 @@ A Chemical formula parser using Lark
 """
 from lark import Lark, Transformer, v_args,Tree
 
-
+#TODO: Improve ignoring nested parentheses
 chemical_grammar = """
 start: element*
 element: ELEMENT
@@ -24,14 +24,16 @@ ELEMENT: UCASE_LETTER LCASE_LETTER
 
 %ignore " "
 %ignore "()"
+%ignore "(())"
 %ignore "[]"
+%ignore "[[]]"
 """
 
 
 @v_args(inline=True)
 class ChemicalFormulaTree(Transformer):
     """
-    A class to transform the Tree to a dictionary
+    Transforming Tree to dict
     The Methods start,group and element are called according to chemical_grammar. 
     Transformers work bottom-up (or depth-first)
     """
@@ -61,7 +63,7 @@ class ChemicalFormulaTree(Transformer):
             if isinstance(element[0], list):
                 self._fuse_and_dictify(element)
             else:  
-                self.result[element[0]] = self.result[element[0]] + element[1] if element[0] in self.result else int(element[1])
+                self.result[element[0]] = self.result[element[0]] + element[1] if element[0] in self.result else element[1]
   
 
     
@@ -69,7 +71,7 @@ class ChemicalFormulaTree(Transformer):
         """ 
             This method process groups of elements by multiply each atoms by the coefficient outside the brackets
             where `args` could be groups or elements , the last argument is the coefficient
-            return a list of elements multiplied by the coefficent
+            return a list of elements multiplied by the coefficient
         """ 
         result_elements = []
         
@@ -107,8 +109,8 @@ class ChemicalFormulaTree(Transformer):
             return a list [element:number of atoms]
         """ 
         element = args[0].value
-
-        if len(args) > 1 and len(args[1].children) > 0:
+        
+        if isinstance(args[-1],Tree):
             nb_atoms = int(args[1].children[0].value)
         else :
             nb_atoms = 1
