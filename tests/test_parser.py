@@ -2,17 +2,7 @@ from chemical_formula_parser.parser import parse_molecule
 import pytest
 from lark.exceptions import UnexpectedToken
 
-def test_empty():
-    formula=""
-    result = parse_molecule(formula)
-    assert result == {}
-    
-    
-def test_formula():
-    formula=""
-    result = parse_molecule(formula)
-    assert result == {}
-    
+  
 @pytest.mark.parametrize(
     "formula,expected_result,is_valid",[
         # Empty cases
@@ -29,6 +19,7 @@ def test_formula():
         ('H2O', {'H': 2, 'O': 1}, True),
         ('Mg(OH)2',{'Mg': 1, 'O': 2,'H': 2}, True),
         ('K4[ON(SO3)2]2',{'K': 4, 'O': 14, 'N': 2, 'S': 4},True),
+        ('K4[ON()(SO3)2]2',{'K': 4, 'O': 14, 'N': 2, 'S': 4},True),
         ('(K4)',{'K': 4},True)
         ]
 )
