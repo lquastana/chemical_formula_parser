@@ -12,6 +12,7 @@ element: ELEMENT
  | ELEMENT nb_atoms
  | "[" element+ "]" [coeff] -> group
  | "(" element+ ")" [coeff] -> group
+ | "{" element+ "}" [coeff] -> group
 
 coeff : NUMBER
 nb_atoms : NUMBER
@@ -27,6 +28,8 @@ ELEMENT: UCASE_LETTER LCASE_LETTER
 %ignore "(())"
 %ignore "[]"
 %ignore "[[]]"
+%ignore "{}"
+%ignore "{{}}"
 """
 
 

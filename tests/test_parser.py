@@ -11,11 +11,15 @@ from lark.exceptions import UnexpectedToken
         ('(())', {}, True),
         ('[]', {}, True),
         ('[[]]', {}, True),
+        ('{}', {}, True),
+        ('{{}}', {}, True),
         # Invalid cases
         ('[', {}, False),
         (']', {}, False),
         ('(', {}, False),
         (')', {}, False),
+        ('{', {}, False),
+        ('}', {}, False),
         ('(O', {}, False),
         ('(O2)[', {}, False),
         # Valid cases
@@ -23,7 +27,7 @@ from lark.exceptions import UnexpectedToken
         ('H', {'H': 1}, True),
         ('Mg', {'Mg': 1}, True),
         # One element several atoms
-        ('H2', {'H': 2}, True),
+        ('H22', {'H': 22}, True),
         ('Mg2', {'Mg': 2}, True),
         ## Several elements and several atoms
         ('MgH2', {'Mg': 1,'H': 2}, True),
@@ -33,17 +37,23 @@ from lark.exceptions import UnexpectedToken
         ## Subgroups without coefficient
         ('(Mg)', {'Mg': 1}, True),
         ('[Mg]', {'Mg': 1}, True),
+        ('{Mg}', {'Mg': 1}, True),
+        
+        ('(Mg)2', {'Mg': 2}, True),
+        ('[Mg]2', {'Mg': 2}, True),
+        ('{Mg}2', {'Mg': 2}, True),
+        
         ('(Mg)H2', {'Mg': 1,'H': 2}, True),
         ('(H2(Mg))', {'H': 2,'Mg': 1}, True),
-        ('[(H2)[Mg]]', {'H': 2,'Mg': 1}, True),
+        ('{[(H2)[Mg]]}', {'H': 2,'Mg': 1}, True),
         ## Subgroups with coefficient
         ('(Mg)2H2', {'Mg': 2,'H': 2}, True),
-        ('(Mg)2(H)2', {'Mg': 2,'H': 2}, True),
+        ('(Mg)2{H}2', {'Mg': 2,'H': 2}, True),
         ('((Mg())2(H)2)3', {'Mg': 6,'H': 6}, True),
         ('(MgH)2', {'Mg': 2,'H': 2}, True),
-        ('(((MgH))2)', {'Mg': 2,'H': 2}, True),
+        ('({(MgH)}2)', {'Mg': 2,'H': 2}, True),
         ('[[[MgH]]2]', {'Mg': 2,'H': 2}, True),
-        ('[[[MgH]]2]2', {'Mg': 4,'H': 4}, True),
+        ('{[[MgH]]2}2', {'Mg': 4,'H': 4}, True),
         ## Formulas from test 
         ('H2O', {'H': 2, 'O': 1}, True),
         ('Mg(OH)2',{'Mg': 1, 'O': 2,'H': 2}, True),
