@@ -74,7 +74,6 @@ class ChemicalFormulaTree(Transformer):
         result_elements = []
         
         # The last argument is the coefficient, if the coefficient is not provided we set it to one
-        test = type(args[-1])
         if isinstance(args[-1],Tree):
             coeff = int(args[-1].children[0].value)
             self.__multiply(args[0:-1],result_elements,coeff)
@@ -128,7 +127,3 @@ def parse_molecule(formula):
         return a dict which count the number of atoms of each element 
     """ 
     return chemical_formula_calc(formula)
-
-if __name__ == '__main__':
-    test = parse_molecule("(H4)2")
-    print("")
